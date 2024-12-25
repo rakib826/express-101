@@ -26,9 +26,17 @@ app.get('/',(req,res)=>{
   })
 })
 app.get('/about',(req,res)=>{
-  res.send(`
-    <h1>I am about route</h1>
-    `)
+  fs.readFile('./pages/about.html',(err,data)=>{
+    if(err){
+      console.log("Error from fs")
+      res.send(`
+        <h1>Something went wrong</h1>
+        `)
+    }else{
+      res.write(data)
+      res.end()
+    }
+  })
 })
 
 app.listen(5001,()=>{

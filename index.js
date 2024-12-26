@@ -4,12 +4,14 @@ const morgan = require('morgan')
 const cors = require('cors')
 const { json } = require('stream/consumers')
 const app = express()
+const router = express.Router()
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(morgan('dev'))
 app.use(cors())
 app.use(globalMiddleware)
+app.use(router)
 
 app.get('/',(req,res)=>{
   // res.json({
@@ -35,7 +37,7 @@ app.get('/',(req,res)=>{
     }
   })
 })
-app.get('/about',(req,res)=>{
+app.get('/about',localMidlleware,(req,res)=>{
   fs.readFile('./pages/about.html',(err,data)=>{
     if(err){
       console.log("Error from fs")
@@ -61,5 +63,10 @@ function globalMiddleware(req,res,next){
     return res.status(400).send("Bad Request")
   }
 
+  next()
+}
+
+function localMidlleware(req,res,next){
+  console.log("I am a local middleware")
   next()
 }

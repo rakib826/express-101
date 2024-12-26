@@ -13,6 +13,7 @@ app.get('/',(req,res)=>{
   //   <p>Javascript is Awesome</p>
   //   `
   // )
+  console.log(req.get('Accept'))
   fs.readFile('./pages/index.html',(err,data)=>{
     if(err){
       console.log("Error")
